@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <!-- 关键：禁止用户缩放，提升移动端体验 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>小惊喜</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .modal {
+      background: white;
+      padding: 25px 20px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      max-width: 90%;
+      width: 90%;
+      z-index: 10;
+    }
+
+    h2 {
+      color: #ff6b6b;
+      margin: 0 0 25px;
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 14px 28px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 90px;
+      outline: none;
+    }
+
+    #yesBtn {
+      background: #ff6b6b;
+      color: white;
+      box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
+    }
+
+    #yesBtn:active {
+      transform: scale(0.95);
+    }
+
+    #noBtn {
+      background: #feca57;
+      color: #2d3436;
+      box-shadow: 0 4px 10px rgba(254, 202, 87, 0.4);
+    }
+
+    /* 成功全屏页 */
+    .success {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      padding: 20px;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <h2>你是不是今天最可爱的人？</h2>
+    <div class="buttons">
+      <button id="yesBtn">是！</button>
+      <button id="noBtn">否</button>
+    </div>
+  </div>
+
+  <div class="success" id="successScreen">
+    🎉 被你发现啦！<br>你就是最棒的！❤️
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const successScreen = document.getElementById('successScreen');
+
+    // 让“否”按钮在屏幕内随机移动（适配手机）
+    noBtn.addEventListener('click', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton); // 支持触屏
+
+    function moveNoButton(e) {
+      e.preventDefault(); // 防止默认行为
+
+      // 获取屏幕安全区域（考虑微信顶部状态栏等）
+      const maxX = window.innerWidth - noBtn.offsetWidth;
+      const maxY = window.innerHeight - noBtn.offsetHeight;
+
+      // 随机位置（确保完全可见）
+      const x = Math.floor(Math.random() * maxX);
+      const y = Math.floor(Math.random() * maxY);
+
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    // 点击“是”触发成功动画
+    yesBtn.addEventListener('click', () => {
+      // 创建彩带（数量适中，避免卡顿）
+      for (let i = 0; i < 80; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = `${Math.random() * 100}vw`;
+          confetti.style.backgroundColor = 
+            ['#ff9ff3', '#feca57', '#1dd1a1', '#ff6b6b', '#48dbfb', '#54a0ff'][Math.floor(Math.random() * 6)];
+          // 随机动画时长（3~5秒）
+          const duration = 3 + Math.random() * 2;
+          confetti.style.animationDuration = `${duration}s`;
+          document.body.appendChild(confetti);
+
+          // 自动清理，避免内存堆积
+          setTimeout(() => {
+            if (confetti.parentNode) confetti.remove();
+          }, duration * 1000);
+        }, i * 40);
+      }
+
+      successScreen.style.opacity = '1';
+      successScreen.style.pointerEvents = 'auto';
+    });
+  </script>
+</body>
+</html>
+
+
