@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给徐星星的专属浪漫</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #ff7eb3, #ff65a3);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            text-align: center;
+        }
+        
+        /* 花瓣飘落效果 */
+        .petal {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        /* 容器样式 */
+        .container {
+            position: relative;
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin: 10% auto;
+            z-index: 10;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        /* 文字动画 */
+        h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .message {
+            font-size: 1.5em;
+            line-height: 1.8;
+            margin: 25px 0;
+            text-align: left;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+        }
+        
+        /* 计时器样式 */
+        .timer {
+            font-size: 1.8em;
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+        }
+        
+        /* 爱心按钮 */
+        .heart-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: white;
+            color: #ff69b4;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .heart-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.6);
+        }
+        
+        /* 动画定义 */
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+            .message {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 花瓣飘落区域 -->
+    <div id="petals-container"></div>
+    
+    <!-- 主内容 -->
+    <div class="container">
+        <h1>❤️ 亲爱的徐星星 ❤️</h1>
+        
+        <div class="message">
+            <p>遇见你的那一刻，我的世界被重新点亮✨</p>
+            <p>你的笑容是我每天最期待的风景，你的声音是我心中最温柔的旋律🎵</p>
+            <p>在这浩瀚星河中，你是我唯一想守护的星辰🌟</p>
+            <p>愿未来的每一天，我都能牵着你的手走过四季，直到时光尽头...</p>
+        </div>
+        
+        <div class="timer">
+            我们已经相爱：<br>
+            <span id="time-counter">00天 00小时 00分 00秒</span>
+        </div>
+        
+        <button class="heart-btn" onclick="showSecretMessage()">
+            点击查看我的真心
+        </button>
+    </div>
+    
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"  type="audio/mpeg">
+    </audio>
+    
+    <script>
+        // 花瓣生成器 
+        function createPetals() {
+            const container = document.getElementById('petals-container'); 
+            const petalCount = 50;
+            const emojis = ['❀', '🌸', '💮', '🏵️', '🌹', '🌺', '🌻'];
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div'); 
+                petal.className  = 'petal';
+                petal.innerHTML  = emojis[Math.floor(Math.random() * emojis.length)]; 
+                
+                // 随机属性
+                petal.style.left  = Math.random()  * 100 + 'vw';
+                petal.style.animationDelay  = Math.random()  * 5 + 's';
+                petal.style.fontSize  = (Math.random()  * 20 + 15) + 'px';
+                petal.style.opacity  = Math.random()  * 0.5 + 0.3;
+                
+                container.appendChild(petal); 
+            }
+        }
+        
+        // 爱情计时器 
+        function updateTimer() {
+            // 设置你们在一起的日期（请修改为实际日期）
+            const startDate = new Date('2022-04-15');
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const days = Math.floor(diff  / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff  % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff  % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff  % (1000 * 60)) / 1000);
+            
+            document.getElementById('time-counter').innerText  = 
+                `${days}天 ${hours}小时 ${minutes}分 ${seconds}秒`;
+        }
+        
+        // 秘密消息
+        function showSecretMessage() {
+            const message = document.querySelector('.message'); 
+            message.innerHTML  = `
+                <p>✨ 给星星的悄悄话 ✨</p>
+                <p>1. 你的眼睛里有整个银河系</p>
+                <p>2. 每次牵你的手，心跳都会加速</p>
+                <p>3. 你做的菜是我吃过最美味的食物</p>
+                <p>4. 你的笑声是我最爱的声音</p>
+                <p>5. 和你在一起的每一秒都值得珍藏</p>
+                <p>💌 我会永远爱你，直到时间的尽头</p>
+            `;
+            
+            // 添加爱心雨特效
+            document.body.style.background  = "linear-gradient(135deg, #ff4d94, #ff1a75)";
+            createHearts();
+        }
+        
+        // 爱心雨效果
+        function createHearts() {
+            const container = document.getElementById('petals-container'); 
+            container.innerHTML  = '';
+            
+            const heartCount = 100;
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div'); 
+                heart.className  = 'petal';
+                heart.innerHTML  = '❤️';
+                
+                heart.style.left  = Math.random()  * 100 + 'vw';
+                heart.style.animationDelay  = Math.random()  * 3 + 's';
+                heart.style.fontSize  = (Math.random()  * 25 + 15) + 'px';
+                heart.style.color  = `rgb(255, ${Math.random()*100},  ${Math.random()*100})`; 
+                
+                container.appendChild(heart); 
+            }
+        }
+        
+        // 初始化页面
+        window.onload  = function() {
+            createPetals();
+            updateTimer();
+            setInterval(updateTimer, 1000);
+            
+            // 自动播放音乐处理
+            document.body.addEventListener('click',  function() {
+                const audio = document.getElementById('bgMusic'); 
+                if (audio.paused)  {
+                    audio.play().catch(e  => console.log(" 自动播放被阻止，请手动点击"));
+                }
+            });
+        }
+    </script>
+</body>
+</html>
